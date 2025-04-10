@@ -3,9 +3,9 @@ from fastapi import APIRouter, HTTPException,Header
 from .utils import get_stock_data, valuation_analysis, predict_valuation_shift
 from app.common.credit_utils import check_and_deduct_credit
 
-router = APIRouter(prefix="/valuation-predictor")
+router = APIRouter()
 
-@router.get("/{symbol}")
+@router.get("/valuation-predictor/{symbol}")
 def analyze_stock(symbol: str,user_id: str = Header(..., alias="userId")):
     symbol = symbol.upper()
     if '.' not in symbol:
