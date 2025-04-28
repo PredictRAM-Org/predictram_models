@@ -1,5 +1,6 @@
 # app/main.py
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from app.PredictRAM_Valuation_Predictor import root as valuation_predictor_router
 from app.Stock_Dividend_Prediction import root as dividend_predictor_router
 from app.Stock_Indicator_Analysis import root as stock_indicator_analysis_router
@@ -8,6 +9,14 @@ from app.Earning_Momentum_Breakout import root as earning_momentum_router
 # from SomeOtherModule import root as other_router
 
 app = FastAPI(title="Predictram models")
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 # Include app-specific routers
 app.include_router(valuation_predictor_router.router)

@@ -1,13 +1,17 @@
 # app/PredictRAM-Valuation-Predictor/root.py
 from fastapi import APIRouter, HTTPException,Header
+from pydantic import BaseModel
 from .utils import get_stock_data, valuation_analysis, predict_valuation_shift
 from app.common.credit_utils import check_and_deduct_credit
 
 router = APIRouter()
 
-@router.get("/valuation-predictor/{symbol}")
-def analyze_stock(symbol: str,user_id: str = Header(..., alias="userId")):
-    symbol = symbol.upper()
+class StockRequest(BaseModel):
+    symbol: str
+
+@router.post("/valuation-predictor")
+def analyze_stock(request: StockRequest,user_id: str = Header(..., alias="userId")):
+    symbol = request.symbol.upper()
     if '.' not in symbol:
         raise HTTPException(status_code=400, detail="Invalid stock symbol format. Include exchange suffix like '.NS'")
     
